@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use anyhow::{Context, Result};
-use ignore::{Walk, WalkBuilder};
 use ignore::overrides::OverrideBuilder;
+use ignore::{Walk, WalkBuilder};
 
 use super::read_manifest;
 
@@ -25,15 +25,21 @@ pub fn walker_install(
     let mut overrides = OverrideBuilder::new(root);
     for exclusion in &manifest.package.exclude {
         let exclusion = exclusion.trim_start_matches("./");
-        overrides.add(&format!("!{exclusion}")).context("failed to process exclude pattern")?;
+        overrides
+            .add(&format!("!{exclusion}"))
+            .context("failed to process exclude pattern")?;
     }
     // Always ignore the thumbnail.
     if let Some(template) = &manifest.template {
         if let Some(thumbnail) = &template.thumbnail {
-            overrides.add(&format!("!{thumbnail}")).context("failed to process exclude pattern")?;
+            overrides
+                .add(&format!("!{thumbnail}"))
+                .context("failed to process exclude pattern")?;
         }
     }
-    let overrides = overrides.build().context("failed to process exclude patterns")?;
+    let overrides = overrides
+        .build()
+        .context("failed to process exclude patterns")?;
 
     Ok(WalkBuilder::new(root)
         .standard_filters(true)

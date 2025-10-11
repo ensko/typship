@@ -44,7 +44,16 @@ fn test_files(
 #[test]
 fn test_ignore() -> io::Result<()> {
     test_files(
-        ["src", "src/lib.typ", "docs", "docs/manual.typ", "excludes_test.txt", "typst.toml", "thumbnail.png"].into(),
+        [
+            "src",
+            "src/lib.typ",
+            "docs",
+            "docs/manual.typ",
+            "excludes_test.txt",
+            "typst.toml",
+            "thumbnail.png",
+        ]
+        .into(),
         walker_publish(&walker_test_path()).collect(),
     )
 }
